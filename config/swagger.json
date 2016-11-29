@@ -1,0 +1,76 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Manner Event API",
+        "license": {
+            "name": "ICS"
+        }
+    },
+    "host": "api.manner.ai",
+    "basePath": "/v1",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/status": {
+            "get": {
+                "summary": "Get Manner API status",
+                "operationId": "getStatus",
+                "tags": [
+                    "status"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The current system status",
+                        "schema": {
+                            "$ref": "#/definitions/Status"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Status": {
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "enum": ["okay", "notokay"]
+                }
+            }
+        },
+        "Error": {
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 500
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Unexpected server error."
+                }
+            }
+        }
+    }
+}

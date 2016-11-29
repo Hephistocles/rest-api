@@ -1,0 +1,33 @@
+{
+  "name": "manner-rest",
+  "version": "1.0.0",
+  "description": "REST API for Manner",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MannerAI/rest-api.git"
+  },
+  "keywords": [
+    "Manner",
+    "REST",
+    "chatbot",
+    "analytics"
+  ],
+  "author": "Christopher Little",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MannerAI/rest-api/issues"
+  },
+  "homepage": "https://github.com/MannerAI/rest-api#readme",
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "body-parser": "^1.15.0",
+    "express": "^4.0.0",
+    "swaggerize-express": "^4.0.0",
+    "swaggerize-ui": "^1.0.1",
+    "swagmock": "~0.0.2"
+  }
+}
