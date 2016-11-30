@@ -18,13 +18,15 @@
     "produces": [
         "application/json"
     ],
+
     "paths": {
+
         "/status": {
             "get": {
                 "summary": "Get Manner API status",
                 "operationId": "getStatus",
                 "tags": [
-                    "status"
+                    "endpoints"
                 ],
                 "responses": {
                     "200": {
@@ -41,10 +43,320 @@
                     }
                 }
             }
+        },
+
+        "/action/{uuid}/response/{conversation_id}/{entities}": {
+            "get": {
+                "summary": "Get a response suggestion for the given action.",
+                "description": "Entity values should be provided in the format: \"location=London|time=08:00\"",
+                "operationId": "invokeAction",
+                "tags": ["endpoints"],
+                "parameters": [{
+                    "name": "uuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string",
+                    "description": "The id for the action we are requesting a suggestion for."
+                }, {
+                    "name": "conversation_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string",
+                    "description": "The id for the conversation we are responding to."
+                }, {
+                    "name": "entities",
+                    "in": "path",
+                    "description": "Values to use for slot-filling entities",
+                    "required": true,
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "collectionFormat": "pipes"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "The suggested response to give the chatuser",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+
+        "/test/{uuid}/action/{conversation_id}": {
+            "get": {
+                "summary": "Select an action from the given test",
+                "operationId": "invokeTest",
+                "tags": ["endpoints"],
+                "parameters": [{
+                    "name": "uuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string",
+                    "description": "The id for the test we are requesting a suggestion for."
+                }, {
+                    "name": "conversation_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string",
+                    "description": "The id for the conversation we are responding to."
+                }],
+                "responses": {
+                    "200": {
+                        "description": "The suggested response to give the chatuser",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+
+        "/goal/{goal_id}/satisfy/{conversation_id}": {
+            "post": {
+                "summary": "Declare that a particular goal has been achieved within a conversation",
+                "operationId": "satisfyGoal",
+                "tags": [
+                    "endpoints"
+                ],
+                "parameters": [{
+                    "name": "goal_id",
+                    "in": "path",
+                    "description": "The id for the goal which has been satisfied.",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "conversation_id",
+                    "in": "path",
+                    "description": "The id for the conversation within which we have been tracking this goal",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Goal tracked received successfully",
+                        "schema": {
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+
+        "/goal/{goal_id}/track/{conversation_id}": {
+            "post": {
+                "summary": "Start tracking a particular goal within this conversation.",
+                "operationId": "trackGoal",
+                "tags": [
+                    "endpoints"
+                ],
+                "parameters": [{
+                    "name": "goal_id",
+                    "in": "path",
+                    "description": "The id for the goal to start tracking",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "conversation_id",
+                    "in": "path",
+                    "description": "The id for the conversation within which to start tracking the goal.",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Goal tracked successfully",
+                        "schema": {
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+
+        "/context/user/{chatuser_id}/{context_name}/{context_value}": {
+            "post": {
+                "summary": "Associate a context point to a particular user, for profiling purposes.",
+                "operationId": "addUserContext",
+                "tags": [
+                    "endpoints"
+                ],
+                "parameters": [{
+                    "name": "chatuser_id",
+                    "in": "path",
+                    "description": "The id for the chat user with whom to associate this context point.",
+                    "required": true,
+                    "type": "string"
+                },{
+                    "name": "context_name",
+                    "in": "path",
+                    "description": "The name of the context point",
+                    "required": true,
+                    "type": "string"
+                },{
+                    "name": "context_value",
+                    "in": "path",
+                    "description": "The name of the context point",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Context point received successfully",
+                        "schema": {
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+
+        "/context/conversation/{conversation_id}/{context_name}/{context_value}": {
+            "post": {
+                "summary": "Associate a point of context with a particular conversation, for profiling purposes.",
+                "operationId": "addConversationContext",
+                "tags": [
+                    "endpoints"
+                ],
+                "parameters": [{
+                    "name": "conversation_id",
+                    "in": "path",
+                    "description": "The id for the conversation with which to associate this context point.",
+                    "required": true,
+                    "type": "string"
+                },{
+                    "name": "context_name",
+                    "in": "path",
+                    "description": "The name of the context point",
+                    "required": true,
+                    "type": "string"
+                },{
+                    "name": "context_value",
+                    "in": "path",
+                    "description": "The name of the context point",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Context point received successfully",
+                        "schema": {
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+
+        "/event/{conversation_id}": {
+            "post": {
+                "summary": "Log a new event for Manner",
+                "operationId": "postEvent",
+                "tags": [
+                    "endpoints"
+                ],
+                "parameters": [{
+                    "name": "conversation_id",
+                    "in": "path",
+                    "description": "The conversation ID this event should be logged against",
+                    "required": true,
+                    "type": "integer",
+                    "minimum": 0
+                }, {
+                    "name": "event",
+                    "description": "The event to log",
+                    "required": true,
+                    "in": "body",
+                    "schema": {
+                        "$ref": "#/definitions/Event"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Event received successfully",
+                        "schema": {
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
         }
+
     },
+
     "definitions": {
+
         "Status": {
+            "type": "object",
             "required": [
                 "status"
             ],
@@ -55,7 +367,9 @@
                 }
             }
         },
+
         "Error": {
+            "type": "object",
             "required": [
                 "code",
                 "message"
@@ -71,6 +385,110 @@
                     "example": "Unexpected server error."
                 }
             }
+        },
+
+        "Response": {
+            "type": "object",
+            "required": ["messages"],
+            "properties": {
+                "messages": {
+                    "type": "array",
+                    "description": "The sequence of messages to be sent to the chat user",
+                    "items": {
+                        "$ref": "#/definitions/Message"
+                    }
+                },
+                "quickReplies": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Suggested replies for the chat user to choose from. This may be empty if no suggestions are reccommended."
+                }
+            }
+        },
+
+        "Message": {
+            "type": "object",
+            "discriminator": "type",
+            "required": ["type"],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "The type of message represented",
+                    "enum": ["TextMessage", "PictureMessage"]
+                }
+            }
+        },
+
+        "TextMessage": {
+            "allOf": [{
+                "$ref": "#/definitions/Message"
+            }, {
+                "required": ["content"],
+                "properties": {
+                    "content": {
+                        "type": "string",
+                        "description": "The text content of the messaage",
+                        "example": "Hello! :)"
+                    }
+                }
+            }]
+        },
+
+        "PictureMessage": {
+            "allOf": [{
+                "$ref": "#/definitions/Message"
+            }, {
+                "required": ["uri"],
+                "properties": {
+                    "uri": {
+                        "type": "string",
+                        "description": "The URI of the image to display.",
+                        "example": "http://manner.ai/res/logo.png"
+                    }
+                }
+            }]
+        },
+
+        "Event": {
+            "type": "object",
+            "discriminator": "type",
+            "required": ["type"],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "The type of event being sent",
+                    "enum": ["MessageEvent", "Enter", "Leave", "PictureMessage"],
+                    "default": "MessageEvent"
+                },
+                "location": {
+                    "type": "string",
+                    "description": "Where available, the geographical location the event was triggered from",
+                    "example": "50°40′46,461″N 95°48′26,533″W"
+                },
+                "timestamp": {
+                    "type": "string",
+                    "description": "The date/time the event was triggered as defined by date-time - RFC3339. If omitted, the current datetime will be assumed.",
+                    "example": "1985-04-12T23:20:50.52Z"
+                }
+            }
+        },
+
+        "MessageEvent": {
+            "allOf": [{
+                "$ref": "#/definitions/Event"
+            }, {
+                "required": ["content"],
+                "properties": {
+                    "content": {
+                        "type": "string",
+                        "description": "Where relevant, the text content of the event.",
+                        "example": "Hello! :)"
+                    }
+                }
+            }]
         }
+
     }
 }

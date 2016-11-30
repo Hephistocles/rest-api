@@ -28,6 +28,7 @@ app.use(swaggerize({
     handlers: path.resolve('./handlers'),
 }));
 
+// show documentation
 app.use('/docs', swaggerUi({
   docs: '/v1/api-docs' // from the express route above.
 }));
@@ -38,3 +39,12 @@ server.listen(9000, 'localhost', function () {
     console.log('App running on %s:%d', this.address().address, this.address().port);
     /* eslint-disable no-console */
 });
+
+
+/**
+Endpoints:
+   - Get response
+   - Start Goal
+   - Achieve Goa-
+   - Add contextpoint
+**/
