@@ -1,5 +1,11 @@
 'use strict';
 
+global.requireLib = function(name) {
+    return require(__dirname + '/lib/' + name);
+}
+
+console.log(__dirname)
+
 let http = require('http');
 let express = require('express');
 let bodyParser = require('body-parser');
@@ -23,7 +29,7 @@ app.use(function(req, res, next) {
 });
 
 app.use(swaggerize({
-    api: path.resolve('./config/swagger.json'),
+    api: console.log(path.resolve(__dirname + '/config/swagger.json')) || path.resolve(__dirname + '/config/swagger.json'),
     // docspath: '/api-docs',
     handlers: path.resolve('./handlers'),
 }));
@@ -43,7 +49,6 @@ server.listen(9000, 'localhost', function () {
 
 /**
 Endpoints:
-   - Get response
    - Start Goal
    - Achieve Goa-
    - Add contextpoint

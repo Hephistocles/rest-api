@@ -1,5 +1,5 @@
 'use strict';
-let mocker = require('../../../mocker');
+let mocker = requireLib('mocker');
 let mocker_express = (props) =>
     ((req, res, next) => {
         mocker(props)
