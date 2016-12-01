@@ -1,20 +1,16 @@
-'use strict';
-let mocker = requireLib('mocker');
+"use strict";
+let mocker = requireLib("mocker");
 let mocker_express = (props) =>
-    ((req, res, next) => {
+    ((req, res) =>
         mocker(props)
             .then((data) => res.status(props.response).send(data && data.responses))
             .catch((err) => res.status(500).send(err))
-    })
+    );
 
-/**
- * Operations on /pets
- */
 module.exports = {
-
-    get: mocker_express({
-        path: '/status',
-        operation: 'get',
+    post: mocker_express({
+        path: "/goal/{goal_id}/track/{conversation_id}",
+        operation: "post",
         response: 200
     })
-}
+};

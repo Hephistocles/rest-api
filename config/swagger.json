@@ -111,9 +111,9 @@
                 }],
                 "responses": {
                     "200": {
-                        "description": "The suggested response to give the chatuser",
+                        "description": "The suggested action to use for this conversation",
                         "schema": {
-                            "$ref": "#/definitions/Response"
+                            "$ref": "#/definitions/Action"
                         }
                     },
                     "default": {
@@ -383,6 +383,19 @@
                 "message": {
                     "type": "string",
                     "example": "Unexpected server error."
+                }
+            }
+        },
+
+        "Action": {
+            "type": "object",
+            "required": [
+                "uuid"
+            ],
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "example": "ace879sue37y3"
                 }
             }
         },
