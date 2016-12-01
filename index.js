@@ -1,17 +1,16 @@
-'use strict';
+"use strict";
 
 global.requireLib = function(name) {
-    return require(__dirname + '/lib/' + name);
-}
+    return require(`${__dirname}/lib/${name}`);
+};
 
-console.log(__dirname)
+let http = require("http");
+let express = require("express");
+let bodyParser = require("body-parser");
+let swaggerize = require("swaggerize-express");
+let swaggerUi = require("swaggerize-ui");
+let path = require("path");
 
-let http = require('http');
-let express = require('express');
-let bodyParser = require('body-parser');
-let swaggerize = require('swaggerize-express');
-let swaggerUi = require('swaggerize-ui');
-let path = require('path');
 
 let app = express();
 
@@ -29,27 +28,19 @@ app.use(function(req, res, next) {
 });
 
 app.use(swaggerize({
-    api: console.log(path.resolve(__dirname + '/config/swagger.json')) || path.resolve(__dirname + '/config/swagger.json'),
+    api: path.resolve(`${__dirname}/config/swagger.json`),
     // docspath: '/api-docs',
-    handlers: path.resolve('./handlers'),
+    handlers: path.resolve("./handlers")
 }));
 
 // show documentation
-app.use('/docs', swaggerUi({
-  docs: '/v1/api-docs' // from the express route above.
+app.use("/docs", swaggerUi({
+  docs: "/v1/api-docs" // from the express route above.
 }));
 
-server.listen(9000, 'localhost', function () {
-    app.swagger.api.host = this.address().address + ':' + this.address().port;
+server.listen(9000, "localhost", function () {
+    app.swagger.api.host = `${this.address().address}:${this.address().port}`;
     /* eslint-disable no-console */
-    console.log('App running on %s:%d', this.address().address, this.address().port);
+    console.log(`App running on ${app.swagger.api.host}`);
     /* eslint-disable no-console */
 });
-
-
-/**
-Endpoints:
-   - Start Goal
-   - Achieve Goa-
-   - Add contextpoint
-**/

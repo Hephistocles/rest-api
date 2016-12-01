@@ -19,10 +19,22 @@
         "application/json"
     ],
 
+    "securityDefinitions": {
+
+        "apiKey": {
+            "x-authorize": "lib/token_auth.js",
+            "type": "apiKey",
+            "name": "access_token",
+            "in": "query"
+        }
+    },
     "paths": {
 
         "/status": {
             "get": {
+                "security": [{
+                    "apiKey": []
+                }],
                 "summary": "Get Manner API status",
                 "operationId": "getStatus",
                 "tags": [
@@ -47,6 +59,9 @@
 
         "/action/{uuid}/response/{conversation_id}/{entities}": {
             "get": {
+                "security": [{
+                    "apiKey": []
+                }],
                 "summary": "Get a response suggestion for the given action.",
                 "description": "Entity values should be provided in the format: \"location=London|time=08:00\"",
                 "operationId": "invokeAction",
@@ -93,6 +108,9 @@
 
         "/test/{uuid}/action/{conversation_id}": {
             "get": {
+                "security": [{
+                    "apiKey": []
+                }],
                 "summary": "Select an action from the given test",
                 "operationId": "invokeTest",
                 "tags": ["endpoints"],
@@ -128,6 +146,9 @@
 
         "/goal/{goal_id}/satisfy/{conversation_id}": {
             "post": {
+                "security": [{
+                    "apiKey": []
+                }],
                 "summary": "Declare that a particular goal has been achieved within a conversation",
                 "operationId": "satisfyGoal",
                 "tags": [
@@ -170,6 +191,9 @@
 
         "/goal/{goal_id}/track/{conversation_id}": {
             "post": {
+                "security": [{
+                    "apiKey": []
+                }],
                 "summary": "Start tracking a particular goal within this conversation.",
                 "operationId": "trackGoal",
                 "tags": [
@@ -212,6 +236,9 @@
 
         "/context/user/{chatuser_id}/{context_name}/{context_value}": {
             "post": {
+                "security": [{
+                    "apiKey": []
+                }],
                 "summary": "Associate a context point to a particular user, for profiling purposes.",
                 "operationId": "addUserContext",
                 "tags": [
@@ -223,13 +250,13 @@
                     "description": "The id for the chat user with whom to associate this context point.",
                     "required": true,
                     "type": "string"
-                },{
+                }, {
                     "name": "context_name",
                     "in": "path",
                     "description": "The name of the context point",
                     "required": true,
                     "type": "string"
-                },{
+                }, {
                     "name": "context_value",
                     "in": "path",
                     "description": "The name of the context point",
@@ -260,6 +287,9 @@
 
         "/context/conversation/{conversation_id}/{context_name}/{context_value}": {
             "post": {
+                "security": [{
+                    "apiKey": []
+                }],
                 "summary": "Associate a point of context with a particular conversation, for profiling purposes.",
                 "operationId": "addConversationContext",
                 "tags": [
@@ -271,13 +301,13 @@
                     "description": "The id for the conversation with which to associate this context point.",
                     "required": true,
                     "type": "string"
-                },{
+                }, {
                     "name": "context_name",
                     "in": "path",
                     "description": "The name of the context point",
                     "required": true,
                     "type": "string"
-                },{
+                }, {
                     "name": "context_value",
                     "in": "path",
                     "description": "The name of the context point",
@@ -308,6 +338,9 @@
 
         "/event/{conversation_id}": {
             "post": {
+                "security": [{
+                    "apiKey": []
+                }],
                 "summary": "Log a new event for Manner",
                 "operationId": "postEvent",
                 "tags": [
@@ -504,4 +537,6 @@
         }
 
     }
+
+
 }
